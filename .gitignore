@@ -1,0 +1,32 @@
+# Dependencies
+node_modules/
+*.log
+
+# Env
+.env
+.env.local
+.env.*.local
+
+# Prisma
+prisma/migrations/
+.prisma
+
+# Next.js
+.next/
+out/
+
+# NestJS
+dist/
+
+# Docker
+docker-compose.override.yml
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE
+.vscode/settings.json
+.idea/
+
