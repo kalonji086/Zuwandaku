@@ -168,9 +168,7 @@ export default function ViewMembersModal({ isOpen, onClose, onReturn, roleName, 
                     </div>
                     <span className="text-gray-500 mx-4">•</span>
                     <span className="text-xs text-gray-500">{member.lastLogin}</span>
-                  </div>
-
-
+                    
                     <button className="p-3 bg-blue-600/30 hover:bg-blue-600/50 rounded-2xl border border-blue-500/40 text-blue-300 hover:text-blue-200 transition-all shadow-lg" onClick={() => {
                       setSelectedMember(member);
                       setViewAccessModalOpen(true);

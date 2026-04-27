@@ -2,7 +2,7 @@
 "use client";
 
 import { useEffect, useState } from 'react';
-import Navbar from '../../../components/Navbar';
+import Navbar from '../../components/Navbar';
 import { FolderOpen, Plus, X } from 'lucide-react';
 
 interface Dossier {
