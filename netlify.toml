@@ -3,6 +3,9 @@
   command = "npm run build"
   publish = ".next"
 
+[build.cache]
+  directories = ["node_modules/.cache", ".next/cache"]
+
 [build.environment]
   NODE_VERSION = "20"
   NPM_FLAGS = "--legacy-peer-deps"
