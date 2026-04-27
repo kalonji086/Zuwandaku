@@ -1,0 +1,41 @@
+services:
+  postgres:
+    image: postgres:16
+    restart: always
+    environment:
+      POSTGRES_DB: zuwandaku
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pass
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user -d zuwandaku"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: postgresql://user:pass@postgres:5432/zuwandaku
+      JWT_SECRET: zuwandaku_super_secret_jwt_key_2024
+      JWT_EXPIRATION: 7d
+      NODE_ENV: production
+      EMAIL_HOST: smtp-relay.brevo.com
+      EMAIL_PORT: 587
+      EMAIL_USER: ${EMAIL_USER}
+      EMAIL_PASS: ${EMAIL_PASS}
+      EMAIL_FROM: "ZUWAndaku <noreply@zuwandaku.com>"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  postgres_data:

@@ -1,0 +1,19 @@
+[build]
+  base = "frontend"
+  command = "npm run build"
+  publish = ".next"
+
+[build.environment]
+  NODE_VERSION = "20"
+  NPM_FLAGS = "--legacy-peer-deps"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
+# Redirect API calls to backend
+[[redirects]]
+  from = "/backend/*"
+  to = "https://zuwandaku-backend.vercel.app/api/:splat"
+  status = 200
+  force = true
+

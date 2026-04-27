@@ -1,0 +1,27 @@
+{
+  "hosting": {
+    "source": "frontend",
+    "framework": "nextjs",
+    "region": "us-central1",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ]
+  },
+  "functions": [
+    {
+      "source": "frontend/functions",
+      "codebase": "default",
+      "ignore": [
+        "node_modules",
+        ".git",
+        "firebase-debug.log",
+        "firebase-debug.*.log"
+      ]
+    }
+  ],
+  "dataconnect": {
+    "source": "frontend/dataconnect"
+  }
+}

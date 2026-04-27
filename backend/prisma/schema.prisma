@@ -1,0 +1,512 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  name          String?
+  password      String
+  role          Role      @default(CLIENT)
+  phone         String?
+  address       String?
+  cni           String?
+  siret         String?
+  licenseNumber String?
+  isActive      Boolean    @default(true)
+  status        UserStatus @default(PENDING)
+  department    Department?
+  lastLogin     DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  properties       Property[]
+  vehicles         Vehicle[]
+  hotelRooms       RoomHotel[]
+  clientContracts  Contract[]       @relation("ClientContracts")
+  ownerContracts   Contract[]       @relation("OwnerContracts")
+  requests         ApproveRequest[]
+  dossierClients   Dossier[]        @relation("DossierClient")
+  dossierResponsable Dossier[]      @relation("DossierResponsable")
+  taskAssignees    Task[]           @relation("TaskAssignee")
+  comments         Comment[]        @relation("CommentUser")
+  apiKeys          ApiKey[]
+  userPermissions  UserPermission[]
+}
+
+model ApproveRequest {
+  id        String        @id @default(cuid())
+  userId    String
+  type      RequestType
+  details   Json
+  status    RequestStatus @default(PENDING)
+  adminNote String?
+  user      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+}
+
+enum UserStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  SUSPENDED
+}
+
+enum RequestType {
+  ACCOUNT_CHANGE
+  ACCOUNT_CREATION
+  PURCHASE
+  RENTAL_VEHICLE
+  RENTAL_PROPERTY
+}
+
+enum RequestStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model Permission {
+  id          String @id @default(cuid())
+  name        String @unique
+  description String?
+  module      String
+  createdAt   DateTime @default(now())
+
+  rolePermissions RolePermission[]
+  userPermissions UserPermission[]
+}
+
+model RolePermission {
+  role         Role
+  permissionId String
+  permission   Permission @relation(fields: [permissionId], references: [id])
+
+  @@id([role, permissionId])
+}
+
+model UserPermission {
+  userId       String
+  permissionId String
+  permission   Permission @relation(fields: [permissionId], references: [id])
+  user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([userId, permissionId])
+}
+
+model Province {
+  id          String   @id @default(cuid())
+  nom         String   @unique
+  chefLieu    String
+  lat         Float
+  lng         Float
+  description String?
+  biensCount  Int      @default(0)
+  createdAt   DateTime @default(now())
+
+  villes     Ville[]
+  properties Property[]
+  vehicles   Vehicle[]
+}
+
+model Ville {
+  id         String   @id @default(cuid())
+  nom        String
+  provinceId String
+  province   Province   @relation(fields: [provinceId], references: [id])
+  quartiers  Quartier[]
+  properties Property[]
+  vehicles   Vehicle[]
+  createdAt  DateTime @default(now())
+}
+
+model Quartier {
+  id         String     @id @default(cuid())
+  nom        String
+  villeId    String
+  ville      Ville      @relation(fields: [villeId], references: [id])
+  properties Property[]
+}
+
+model Property {
+  id          String       @id @default(cuid())
+  type        PropertyType
+  provinceId  String
+  villeId     String
+  quartierId  String?
+  price       Float
+  surface     Float?
+  description String
+  photos      String[]
+  status      Status       @default(AVAILABLE)
+  lat         Float?
+  lng         Float?
+  ownerId     String
+  owner       User         @relation(fields: [ownerId], references: [id])
+  province    Province     @relation(fields: [provinceId], references: [id])
+  ville       Ville        @relation(fields: [villeId], references: [id])
+  quartier    Quartier?    @relation(fields: [quartierId], references: [id])
+  contracts   Contract[]
+  dossiers    Dossier[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+}
+
+model Vehicle {
+  id           String      @id @default(cuid())
+  marque       String
+  modele       String
+  annee        Int
+  type         VehicleType
+  pricePerDay  Float?
+  priceSale    Float?
+  availability Boolean     @default(true)
+  photos       String[]
+  provinceId   String
+  villeId      String
+  ownerId      String
+  owner        User        @relation(fields: [ownerId], references: [id])
+  province     Province    @relation(fields: [provinceId], references: [id])
+  ville        Ville       @relation(fields: [villeId], references: [id])
+  contracts    Contract[]
+  dossiers     Dossier[]
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+}
+
+model Contract {
+  id         String         @id @default(cuid())
+  type       ContractType
+  startDate  DateTime?
+  endDate    DateTime?
+  amount     Float
+  currency   String         @default("USD")
+  status     ContractStatus @default(ACTIVE)
+  clientId   String
+  client     User           @relation("ClientContracts", fields: [clientId], references: [id])
+  ownerId    String?
+  owner      User?          @relation("OwnerContracts", fields: [ownerId], references: [id])
+  propertyId String?
+  property   Property?      @relation(fields: [propertyId], references: [id])
+  vehicleId  String?
+  vehicle    Vehicle?       @relation(fields: [vehicleId], references: [id])
+  dossierId  String?   @unique
+  dossier    Dossier?       @relation("DossierContract", fields: [dossierId], references: [id])
+  createdAt  DateTime       @default(now())
+  updatedAt  DateTime       @updatedAt
+
+  @@map("contracts")
+}
+
+model Dossier {
+  id             String        @id @default(cuid())
+  reference      String        @unique
+  type           DossierType
+  clientId       String
+  client         User          @relation("DossierClient", fields: [clientId], references: [id])
+  responsableId  String?
+  responsable    User?         @relation("DossierResponsable", fields: [responsableId], references: [id])
+  bienPropertyId String?
+  bienProperty   Property?     @relation(fields: [bienPropertyId], references: [id])
+  bienVehicleId  String?
+  bienVehicle    Vehicle?      @relation(fields: [bienVehicleId], references: [id])
+  contractId     String?       @unique
+  contract       Contract?     @relation("DossierContract")
+  status         DossierStatus @default(EN_ATTENTE)
+  dateCreation   DateTime      @default(now())
+  dateDebut      DateTime?
+  dateFin        DateTime?
+  notes          String?
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  closedAt       DateTime?
+
+  tasks Task[]
+}
+
+model RoomHotel {
+  id            String     @id @default(cuid())
+  hotelId       String
+  number        String     @unique
+  type          String
+  pricePerNight Float      @default(0)
+  status        RoomStatus @default(AVAILABLE)
+  amenities     String[]
+  maxGuests     Int        @default(2)
+  photos        String[]
+  description   String?
+  isActive      Boolean    @default(true)
+
+  owner    User           @relation(fields: [hotelId], references: [id])
+  bookings BookingHotel[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model RestaurantMenuItem {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  price       Float
+  category    String
+  tags        String[]
+  available   Boolean  @default(true)
+  prepTime    Int      @default(15)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  orderItems RestaurantOrderItem[]
+}
+
+model RestaurantOrder {
+  id           String              @id @default(cuid())
+  orderNumber  String              @unique
+  clientId     String?
+  clientName   String
+  clientPhone  String?
+  clientEmail  String?
+  tableNumber  String?
+  roomNumber   String?
+  deliveryType RestaurantDelivery  @default(SUR_PLACE)
+  status       RestaurantStatus    @default(EN_ATTENTE)
+  totalAmount  Float
+  notes        String?
+  spiceLevel   String?
+  paymentMethod String            @default("CASH")
+  paymentStatus PaymentStatus     @default(PENDING)
+  treatedBy    String?
+  treatedAt    DateTime?
+  createdAt    DateTime            @default(now())
+  updatedAt    DateTime            @updatedAt
+
+  items RestaurantOrderItem[]
+}
+
+model RestaurantOrderItem {
+  id         String             @id @default(cuid())
+  orderId    String
+  menuItemId String
+  quantity   Int
+  unitPrice  Float
+  order      RestaurantOrder    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  menuItem   RestaurantMenuItem @relation(fields: [menuItemId], references: [id])
+}
+
+enum RestaurantDelivery {
+  SUR_PLACE
+  EN_CHAMBRE
+  A_EMPORTER
+}
+
+enum RestaurantStatus {
+  EN_ATTENTE
+  EN_PREPARATION
+  PRET
+  LIVRE
+  ANNULE
+}
+
+model BookingHotel {
+  id            String        @id @default(cuid())
+  roomId        String
+  guestName     String
+  guestPhone    String?
+  guestEmail    String?
+  checkInDate   DateTime
+  checkOutDate  DateTime
+  totalAmount   Float
+  paymentStatus PaymentStatus @default(PENDING)
+  room          RoomHotel     @relation(fields: [roomId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum RoomStatus {
+  AVAILABLE
+  OCCUPIED
+  RESERVED
+  MAINTENANCE
+  DIRTY
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  REFUNDED
+}
+
+enum Role {
+  SUPER_ADMIN
+  DEPT_ADMIN
+  ADMIN
+  PROPRIETAIRE
+  CLIENT
+  COMMISSIONNAIRE
+  HOTELIER
+}
+
+enum Department {
+  IMMOBILIER
+  VEHICULES
+  HOTEL
+  FINANCE
+  SUPPORT
+}
+
+enum PropertyType {
+  MAISON
+  PARCELLE
+  APPARTEMENT
+  BUREAU
+  HOTEL
+}
+
+enum Status {
+  AVAILABLE
+  RENTED
+  SOLD
+  RESERVED
+}
+
+enum VehicleType {
+  LOCATION
+  VENTE
+}
+
+enum ContractType {
+  LOCATION
+  VENTE
+  HOTEL_BOOKING
+}
+
+enum ContractStatus {
+  ACTIVE
+  TERMINATED
+  CANCELLED
+  PENDING
+}
+
+enum DossierType {
+  LOCATION_MAISON
+  LOCATION_VEHICULE
+  VENTE
+  MAINTENANCE
+  LITIGE
+  HOTEL_BOOKING
+}
+
+enum DossierStatus {
+  EN_ATTENTE
+  EN_COURS
+  FINALISE
+  ANNULE
+}
+
+enum TaskType {
+  PARALLEL
+  CHILD
+  AFTER
+  BEFORE
+}
+
+enum TaskStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+}
+
+model Procedure {
+  id          String   @id @default(cuid())
+  name        String
+  description String
+  group       String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  tasks       Task[]
+}
+
+model Task {
+  id          String     @id @default(cuid())
+  name        String
+  titre       String
+  description String?
+  type        TaskType?
+  status      TaskStatus @default(PENDING)
+  assigneeId  String?
+  assignee    User?      @relation("TaskAssignee", fields: [assigneeId], references: [id])
+  dossierId   String?
+  dossier     Dossier?   @relation(fields: [dossierId], references: [id])
+  procedureId String?
+  procedure   Procedure? @relation(fields: [procedureId], references: [id], onDelete: SetNull)
+  files       String[]
+  deadline    DateTime?
+  info        String?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  comments Comment[]
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  text      String
+  timestamp DateTime @default(now())
+  edited    Boolean  @default(false)
+  taskId    String
+  userId    String
+  task      Task     @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  user      User     @relation("CommentUser", fields: [userId], references: [id])
+
+  @@map("procedure_comments")
+}
+
+model PasswordResetOtp {
+  id        String   @id @default(cuid())
+  email     String
+  code      String
+  expiresAt DateTime
+  used      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([email])
+}
+
+model EmailVerificationOtp {
+  id        String   @id @default(cuid())
+  email     String
+  code      String
+  expiresAt DateTime
+  used      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([email])
+}
+
+model ApiKey {
+  id        String    @id @default(cuid())
+  key       String    @unique @db.VarChar(255)
+  role      ApiRole
+  userId    String?
+  expires   DateTime?
+  lastUsed  DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+}
+
+enum ApiRole {
+  COMMISSIONNAIRE
+  PROPRIETAIRE
+  CLIENT
+  HOTELIER
+  DEPT_ADMIN
+}
