@@ -1,0 +1,23 @@
+// Shared Starlink style tokens — imported by admin pages
+export const S = {
+  page: { background: '#050508', color: '#fff', minHeight: '100%' } as React.CSSProperties,
+  card: { background: '#0d0d14', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 14, padding: '20px 24px' } as React.CSSProperties,
+  cardSm: { background: '#0d0d14', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 10, padding: '14px 16px' } as React.CSSProperties,
+  input: { width: '100%', background: '#111118', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 8, padding: '9px 12px', color: '#fff', fontSize: 13, outline: 'none' } as React.CSSProperties,
+  select: { width: '100%', background: '#111118', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 8, padding: '9px 12px', color: '#fff', fontSize: 13, outline: 'none' } as React.CSSProperties,
+  btnPrimary: { background: 'linear-gradient(135deg,#1a6dff,#0040cc)', border: 'none', borderRadius: 8, padding: '9px 18px', color: '#fff', fontSize: 13, fontWeight: 600, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6 } as React.CSSProperties,
+  btnDanger: { background: 'rgba(239,68,68,0.15)', border: '1px solid rgba(239,68,68,0.3)', borderRadius: 8, padding: '9px 18px', color: '#f87171', fontSize: 13, fontWeight: 600, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6 } as React.CSSProperties,
+  btnGhost: { background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 8, padding: '9px 18px', color: 'rgba(255,255,255,0.6)', fontSize: 13, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6 } as React.CSSProperties,
+  label: { fontSize: 10, fontWeight: 700, letterSpacing: '0.08em', color: 'rgba(255,255,255,0.35)', textTransform: 'uppercase' as const, marginBottom: 6, display: 'block' },
+  badge: (color: string) => ({ background: `${color}18`, border: `1px solid ${color}40`, borderRadius: 6, padding: '2px 8px', fontSize: 11, fontWeight: 600, color }) as React.CSSProperties,
+  th: { padding: '10px 14px', fontSize: 10, fontWeight: 700, letterSpacing: '0.08em', color: 'rgba(255,255,255,0.3)', textTransform: 'uppercase' as const, textAlign: 'left' as const, borderBottom: '1px solid rgba(255,255,255,0.06)' },
+  td: { padding: '12px 14px', fontSize: 13, color: 'rgba(255,255,255,0.75)', borderBottom: '1px solid rgba(255,255,255,0.04)' },
+  modal: { position: 'fixed' as const, inset: 0, background: 'rgba(0,0,0,0.8)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 50, padding: 16 },
+  modalBox: { background: '#0d0d14', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 16, width: '100%', maxWidth: 520, maxHeight: '90vh', overflow: 'auto' } as React.CSSProperties,
+  BLUE: '#1a6dff',
+  GREEN: '#00e5a0',
+  RED: '#f87171',
+  YELLOW: '#ffcc00',
+  PURPLE: '#7b61ff',
+  CYAN: '#00c2ff',
+};

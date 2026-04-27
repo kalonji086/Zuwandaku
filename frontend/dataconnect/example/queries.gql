@@ -1,0 +1,47 @@
+query ListPublicTrips @auth(level: PUBLIC, insecureReason: "This operation is safe to expose to the public as it only returns public trips.") {
+  trips(where: {isPublic: {eq: true}}) {
+    id
+    title
+    startDate
+    endDate
+    coverPhotoUrl
+    user {
+      displayName
+    }
+  }
+}
+
+query GetMyTrips @auth(level: USER, insecureReason: "This operation is safe to expose to all logged in users, as it only retrieves their own trips based on auth.uid.") {
+  trips(where: {userId: {eq_expr: "auth.uid"}}) {
+    id
+    title
+    startDate
+    endDate
+    description
+    isPublic
+    coverPhotoUrl
+  }
+}
+
+mutation CreateNewTrip($title: String!, $startDate: Date!, $endDate: Date!, $isPublic: Boolean!, $description: String, $coverPhotoUrl: String) @auth(level: USER) {
+  trip_insert(data: {
+    title: $title,
+    startDate: $startDate,
+    endDate: $endDate,
+    isPublic: $isPublic,
+    description: $description,
+    coverPhotoUrl: $coverPhotoUrl,
+    userId_expr: "auth.uid",
+    createdAt_expr: "request.time",
+    updatedAt_expr: "request.time"
+  })
+}
+
+mutation AddCommentToTrip($tripId: UUID!, $content: String!) @auth(level: USER) {
+  comment_insert(data: {
+    tripId: $tripId,
+    content: $content,
+    userId_expr: "auth.uid",
+    createdAt_expr: "request.time"
+  })
+}

@@ -1,0 +1,131 @@
+mutation CreateDemoData @transaction @auth(level: PUBLIC, insecureReason: "Seed data is safe to be inserted by anyone for demo purposes.") {
+  user_insertMany(data: [
+    {
+      id: "a1b2c3d4-e5f6-7890-1234-567890abcdef",
+      displayName: "Alice Wonderland",
+      email: "alice@example.com",
+      createdAt: "2024-01-01T10:00:00Z",
+      bio: "An avid traveler and adventurer.",
+      photoUrl: "https://example.com/alice_photo.jpg"
+    },
+    {
+      id: "f1e2d3c4-b5a6-0987-6543-210fedcba987",
+      displayName: "Bob The Builder",
+      email: "bob@example.com",
+      createdAt: "2024-01-02T11:00:00Z",
+      bio: "Loves to explore new places and capture moments.",
+      photoUrl: "https://example.com/bob_photo.jpg"
+    }
+  ])
+  trip_insertMany(data: [
+    {
+      id: "t1r2i3p4-5e6f-7890-abcd-ef0123456789",
+      userId: "a1b2c3d4-e5f6-7890-1234-567890abcdef",
+      title: "European Adventure",
+      startDate: "2024-06-01",
+      endDate: "2024-06-15",
+      isPublic: true,
+      createdAt: "2024-05-01T10:00:00Z",
+      updatedAt: "2024-05-01T10:00:00Z",
+      description: "A two-week journey through Europe.",
+      coverPhotoUrl: "https://example.com/europe_cover.jpg"
+    },
+    {
+      id: "t9r8i7p6-5e4f-3210-fedc-ba9876543210",
+      userId: "f1e2d3c4-b5a6-0987-6543-210fedcba987",
+      title: "Mountain Hiking Extravaganza",
+      startDate: "2024-07-10",
+      endDate: "2024-07-15",
+      isPublic: false,
+      createdAt: "2024-06-01T12:00:00Z",
+      updatedAt: "2024-06-01T12:00:00Z",
+      description: "An intense hiking trip in the Alps.",
+      coverPhotoUrl: "https://example.com/alps_cover.jpg"
+    }
+  ])
+  location_insertMany(data: [
+    {
+      id: "l1o2c3a4-t5i6-7890-1234-567890abcdef",
+      tripId: "t1r2i3p4-5e6f-7890-abcd-ef0123456789",
+      name: "Eiffel Tower",
+      order: 1,
+      createdAt: "2024-06-02T14:30:00Z",
+      description: "Iconic landmark in Paris.",
+      latitude: 48.8584,
+      longitude: 2.2945
+    },
+    {
+      id: "l9o8c7a6-t5i4-3210-fedc-ba9876543210",
+      tripId: "t1r2i3p4-5e6f-7890-abcd-ef0123456789",
+      name: "Colosseum",
+      order: 2,
+      createdAt: "2024-06-05T09:00:00Z",
+      description: "Ancient Roman amphitheater.",
+      latitude: 41.8902,
+      longitude: 12.4922
+    }
+  ])
+  activity_insertMany(data: [
+    {
+      id: "a1c2t3i4-v5i6-7890-1234-567890abcdef",
+      locationId: "l1o2c3a4-t5i6-7890-1234-567890abcdef",
+      name: "Visit Eiffel Tower",
+      startTime: "2024-06-02T15:00:00Z",
+      endTime: "2024-06-02T17:00:00Z",
+      createdAt: "2024-06-02T14:00:00Z",
+      description: "Sightseeing at the Eiffel Tower."
+    },
+    {
+      id: "a9c8t7i6-v5i4-3210-fedc-ba9876543210",
+      locationId: "l9o8c7a6-t5i4-3210-fedc-ba9876543210",
+      name: "Explore Colosseum",
+      startTime: "2024-06-05T10:00:00Z",
+      endTime: "2024-06-05T12:00:00Z",
+      createdAt: "2024-06-05T09:30:00Z",
+      description: "Guided tour of the Colosseum."
+    }
+  ])
+  photo_insertMany(data: [
+    {
+      id: "p1h2o3t4-o5s6-7890-1234-567890abcdef",
+      tripId: "t1r2i3p4-5e6f-7890-abcd-ef0123456789",
+      locationId: "l1o2c3a4-t5i6-7890-1234-567890abcdef",
+      activityId: "a1c2t3i4-v5i6-7890-1234-567890abcdef",
+      imageUrl: "https://example.com/eiffel_photo1.jpg",
+      createdAt: "2024-06-02T16:00:00Z",
+      caption: "View from the Eiffel Tower!"
+    },
+    {
+      id: "p9h8o7t6-o5s4-3210-fedc-ba9876543210",
+      tripId: "t1r2i3p4-5e6f-7890-abcd-ef0123456789",
+      locationId: "l9o8c7a6-t5i4-3210-fedc-ba9876543210",
+      activityId: "a9c8t7i6-v5i4-3210-fedc-ba9876543210",
+      imageUrl: "https://example.com/colosseum_photo1.jpg",
+      createdAt: "2024-06-05T11:00:00Z",
+      caption: "Majestic Colosseum."
+    }
+  ])
+  comment_insertMany(data: [
+    {
+      id: "c1o2m3m4-e5n6-7890-1234-567890abcdef",
+      tripId: "t1r2i3p4-5e6f-7890-abcd-ef0123456789",
+      userId: "a1b2c3d4-e5f6-7890-1234-567890abcdef",
+      content: "Paris was amazing!",
+      createdAt: "2024-06-03T08:00:00Z"
+    },
+    {
+      id: "c9o8m7m6-e5n4-3210-fedc-ba9876543210",
+      tripId: "t1r2i3p4-5e6f-7890-abcd-ef0123456789",
+      userId: "f1e2d3c4-b5a6-0987-6543-210fedcba987",
+      content: "Can't wait to see the Colosseum!",
+      createdAt: "2024-06-04T13:00:00Z"
+    }
+  ])
+  like_insertMany(data: [
+    {
+      tripId: "t1r2i3p4-5e6f-7890-abcd-ef0123456789",
+      userId: "f1e2d3c4-b5a6-0987-6543-210fedcba987",
+      createdAt: "2024-06-03T10:00:00Z"
+    }
+  ])
+}

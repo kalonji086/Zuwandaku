@@ -1,0 +1,9 @@
+# Vercel
+.vercel
+
+# Netlify
+.netlify
+
+# Environment variables
+.env*.local
+

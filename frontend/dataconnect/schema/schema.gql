@@ -1,0 +1,60 @@
+type User @table {
+  displayName: String!
+  createdAt: Timestamp!
+  email: String
+  bio: String
+  photoUrl: String
+}
+
+type Trip @table {
+  title: String!
+  startDate: Date!
+  endDate: Date!
+  isPublic: Boolean!
+  createdAt: Timestamp!
+  updatedAt: Timestamp!
+  description: String
+  coverPhotoUrl: String
+  user: User
+}
+
+type Location @table {
+  name: String!
+  order: Int!
+  createdAt: Timestamp!
+  description: String
+  latitude: Float
+  longitude: Float
+  trip: Trip
+}
+
+type Activity @table {
+  name: String!
+  startTime: Timestamp!
+  createdAt: Timestamp!
+  description: String
+  endTime: Timestamp
+  location: Location
+}
+
+type Photo @table {
+  imageUrl: String!
+  createdAt: Timestamp!
+  caption: String
+  trip: Trip
+  location: Location
+  activity: Activity
+}
+
+type Comment @table {
+  content: String!
+  createdAt: Timestamp!
+  user: User
+  trip: Trip
+}
+
+type Like @table(key: ["user", "trip"]) {
+  createdAt: Timestamp!
+  user: User!
+  trip: Trip!
+}
