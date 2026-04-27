@@ -1,10 +1,12 @@
 "use client";
 
 import { Eye, Shield, Key, User } from 'lucide-react';
+import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 
-export default function ViewUserPage({ searchParams }: { searchParams: { userId: string } }) {
-  const userId = searchParams.userId;
+export default function ViewUserPage() {
+  const searchParams = useSearchParams();
+  const userId = searchParams.get('userId');
   
   // Simulate user data
   const user = {

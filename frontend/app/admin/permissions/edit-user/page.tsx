@@ -1,11 +1,13 @@
 "use client";
 
 import { useState, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { Shield, X, Check, Save, User, Mail, Phone, KeyRound } from 'lucide-react';
 import Link from 'next/link';
 
-export default function EditUserPage({ searchParams }: { searchParams: { userId: string } }) {
-  const userId = searchParams.userId;
+export default function EditUserPage() {
+  const searchParams = useSearchParams();
+  const userId = searchParams.get('userId');
   
   const [formData, setFormData] = useState({
     name: '',
