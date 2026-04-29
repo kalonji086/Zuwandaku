@@ -12,7 +12,6 @@ const nextConfig = {
     ];
   },
   images: {
-    unoptimized: process.env.NETLIFY === 'true', // Disable image optimization on Netlify (uses Next.js Image API)
     remotePatterns: [
       {
         protocol: 'https',

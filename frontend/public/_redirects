@@ -1,6 +1,3 @@
 # API proxy redirects
 /backend/*  https://zuwandaku-backend.vercel.app/api/:splat  200
 
-# SPA fallback — let Next.js handle routing
-/*    /index.html   200
-

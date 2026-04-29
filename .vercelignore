@@ -1,0 +1,11 @@
+.git
+.gitignore
+node_modules
+backend/
+skills/
+docker-compose.yml
+firebase.json
+netlify.toml
+SETUP.md
+TODO*.md
+COMPLETION_REPORT.md
