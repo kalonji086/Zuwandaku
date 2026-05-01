@@ -19,6 +19,9 @@ async function bootstrap() {
   
   const app = await NestFactory.create(AppModule);
 
+  // Set global prefix for all routes
+  app.setGlobalPrefix('api');
+
   // CORS: Dynamic origins for local + Railway/Vercel prod
   const allowedOrigins = process.env.FRONTEND_URL 
     ? [process.env.FRONTEND_URL, 'http://localhost:3001', 'http://localhost:3000']
