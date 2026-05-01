@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/api",
+  baseURL: process.env.NEXT_PUBLIC_API_URL || "https://zuwandaku-backend-holy-glitter-298.fly.dev/api",
   headers: { "Content-Type": "application/json" },
 });
 

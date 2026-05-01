@@ -3,7 +3,7 @@ FROM node:20-alpine AS builder
 WORKDIR /app
 
 COPY package*.json ./
-RUN npm ci
+RUN npm install
 
 COPY . .
 RUN npx prisma generate
@@ -14,7 +14,7 @@ FROM node:20-alpine AS runner
 WORKDIR /app
 
 COPY package*.json ./
-RUN npm ci --omit=dev
+RUN npm install --omit=dev
 
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
@@ -23,5 +23,5 @@ COPY prisma ./prisma
 
 EXPOSE 3000
 
-# Lance les migrations puis démarre
-CMD ["sh", "-c", "npx prisma migrate deploy && node dist/main"]
+# Run migrations if DATABASE_URL is set, otherwise skip
+CMD ["sh", "-c", "if [ -n \"$DATABASE_URL\" ]; then npx prisma migrate deploy || true; fi && node dist/main"]

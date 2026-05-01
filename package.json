@@ -2,7 +2,7 @@
   "name": "zuwandaku",
   "version": "0.1.0",
   "description": "Plateforme immobilière et véhicules - Kinshasa RDC",
-  "keywords": ["real-estate", "vehicles", "nestjs", "nextjs", "typescript"],
+"keywords":["real-estate","vehicles","nestjs","nextjs","typescript"],"packageManager":"npm@10.8.1",
   "workspaces": [
     "backend",
     "frontend"

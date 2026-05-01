@@ -5,7 +5,7 @@ export enum Role {
   PROPRIETAIRE = 'PROPRIETAIRE',
   CLIENT = 'CLIENT',
   COMMISSIONNAIRE = 'COMMISSIONNAIRE',
-  HOTELIER = 'HOTELIER',
+  HOTEL = 'HOTEL',
 }
 
 export enum UserStatus {

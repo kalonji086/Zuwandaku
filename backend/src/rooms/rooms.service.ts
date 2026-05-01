@@ -29,13 +29,13 @@ export class RoomsService {
     // Résoudre hotelId si absent
     if (!hotelId) {
       const admin = await this.prisma.user.findFirst({
-        where: { role: { in: ['ADMIN', 'HOTELIER'] } },
+where: { role: { in: ['ADMIN', 'HOTELIER'] } },
         select: { id: true },
       });
       hotelId = admin?.id;
     }
 
-    if (!hotelId) throw new NotFoundException('Aucun hôtelier trouvé. Créez d\'abord un compte HOTELIER.');
+    if (!hotelId) throw new NotFoundException('Aucun hôtelier trouvé. Créez d\'abord un compte HOTEL.');
 
     return this.prisma.roomHotel.create({
       data: {

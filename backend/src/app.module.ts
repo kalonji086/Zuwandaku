@@ -15,6 +15,7 @@ import { VehiclesModule } from './vehicles/vehicles.module';
 import { RoomsModule } from './rooms/rooms.module';
 import { MemberAssignationModule } from './member-assignation/member-assignation.module';
 import { RestaurantModule } from './restaurant/restaurant.module';
+import { AppController } from './app.controller';
 
 @Module({
   imports: [
@@ -34,6 +35,6 @@ import { RestaurantModule } from './restaurant/restaurant.module';
     MemberAssignationModule,
     RestaurantModule,
   ],
-  controllers: [PublicProcedureController],
+  controllers: [PublicProcedureController, AppController],
 })
 export class AppModule {}

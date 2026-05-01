@@ -17,7 +17,7 @@
 # Redirect API calls to backend
 [[redirects]]
   from = "/backend/*"
-  to = "https://zuwandaku-backend.vercel.app/api/:splat"
+  to = "https://zuwandaku-backend-holy-glitter-298.fly.dev/api/:splat"
   status = 200
   force = true
 

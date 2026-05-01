@@ -30,7 +30,7 @@ Dans le dashboard Netlify :
 ### Variables obligatoires :
 
 ```
-NEXT_PUBLIC_API_URL=https://zuwandaku-backend.vercel.app/api
+NEXT_PUBLIC_API_URL=https://zuwandaku-backend-holy-glitter-298.fly.dev/api
 NEXT_PUBLIC_SUPABASE_URL=https://votre-projet.supabase.co
 NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY=votre-cle-anon
 ```
@@ -57,7 +57,7 @@ NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY=votre-cle-anon
 
 Les appels à `/backend/*` sont automatiquement redirigés vers :
 ```
-https://zuwandaku-backend.vercel.app/api/*
+https://zuwandaku-backend-holy-glitter-298.fly.dev/api/*
 ```
 
 Cela est configuré dans :

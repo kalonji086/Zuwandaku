@@ -3,13 +3,26 @@ import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import helmet from 'helmet';
 
+// Validate required environment variables at startup
+function validateEnvironment() {
+  const required = ['DATABASE_URL'];
+  const missing = required.filter(v => !process.env[v]);
+  
+  if (missing.length > 0 && process.env.NODE_ENV === 'production') {
+    console.warn(`⚠️ Missing required environment variables: ${missing.join(', ')}`);
+    console.warn('The application may not start properly without these variables.');
+  }
+}
+
 async function bootstrap() {
+  validateEnvironment();
+  
   const app = await NestFactory.create(AppModule);
 
   // CORS: Dynamic origins for local + Railway/Vercel prod
   const allowedOrigins = process.env.FRONTEND_URL 
     ? [process.env.FRONTEND_URL, 'http://localhost:3001', 'http://localhost:3000']
-    : ['http://localhost:3001', 'http://localhost:3000', 'https://your-app.vercel.app', 'https://your-app.railway.app'];
+    : ['http://localhost:3001', 'http://localhost:3000', 'https://your-app.vercel.app', 'https://your-app.railway.app', 'https://your-app.fly.dev'];
 
   app.enableCors({
     origin: allowedOrigins,

@@ -1,14 +1,1 @@
-# Task: Remove duplicate side menus from navigation bar
-
-## Plan Steps:
-- [x] Step 1: Create this TODO.md ✅
-- [x] Step 2: Fix duplicate buttons in Navbar.tsx ✅
-- [x] Step 3: Delete unused sidebar components (Sidebar.tsx, RightSidebar.tsx, MenuPanel.tsx) ✅
-- [ ] Step 4: Test public pages and dashboards
-- [ ] Step 5: Update TODO.md with results
-- [ ] Step 6: Complete task
-
-## Notes:
-- Layouts have own permanent sidebars (unaffected)
-- Navbar now has single clean top nav (toggle removed as sidebars unused)
-
+# Task: Remove Loading/Splash Pages\n\n## Steps:\n1. ✅ Create TODO.md with plan breakdown\n2. Delete frontend/app/loading.tsx\n3. Update frontend/app/ClientLayout.tsx to bypass splash screen\n4. Delete frontend/app/components/LoadingScreenNew.tsx\n5. Test the changes\n6. Mark complete with attempt_completion

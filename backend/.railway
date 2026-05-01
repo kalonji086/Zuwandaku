@@ -1,0 +1,22 @@
+# Variables d'environnement par défaut pour Railway
+# Ces valeurs peuvent être surchargées dans les settings du projet Railway
+
+# Port
+PORT=3000
+
+# Environnement
+NODE_ENV=production
+
+# JWT (à remplacer par des valeurs sécurisées en production)
+JWT_SECRET=your-secret-key-change-this-in-production
+JWT_EXPIRATION=7d
+
+# Base de données (sera configurée automatiquement par Railway)
+# DATABASE_URL=postgresql://user:password@host:port/database
+
+# Supabase (optionnel, si utilisé)
+# SUPABASE_URL=https://your-project.supabase.co
+# SUPABASE_ANON_KEY=your-anon-key
+
+# Frontend URL (à configurer selon votre déploiement)
+# FRONTEND_URL=https://your-frontend.vercel.app

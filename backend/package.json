@@ -2,7 +2,9 @@
   "name": "zuwandaku-backend",
   "version": "0.1.0",
   "description": "ZUWAndaku Backend - NestJS API",
+  "main": "dist/main.js",
   "prisma": {
+    "schema": "prisma/schema.prisma",
     "seed": "node prisma/seed.js"
   },
   "scripts": {
