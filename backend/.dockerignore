@@ -1,4 +1,10 @@
 node_modules
 dist
 .env
+.env.*
+!.env.example
 *.log
+.git
+.gitignore
+prisma/seed.*
+prisma/create-super-admin.*

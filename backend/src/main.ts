@@ -1,48 +1,27 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
-import helmet from 'helmet';
-
-// Validate required environment variables at startup
-function validateEnvironment() {
-  const required = ['DATABASE_URL'];
-  const missing = required.filter(v => !process.env[v]);
-  
-  if (missing.length > 0 && process.env.NODE_ENV === 'production') {
-    console.warn(`⚠️ Missing required environment variables: ${missing.join(', ')}`);
-    console.warn('The application may not start properly without these variables.');
-  }
-}
 
 async function bootstrap() {
-  validateEnvironment();
-  
   const app = await NestFactory.create(AppModule);
 
-  // Set global prefix for all routes
   app.setGlobalPrefix('api');
 
-  // CORS: Dynamic origins for local + Railway/Vercel prod
-  const allowedOrigins = process.env.FRONTEND_URL 
-    ? [process.env.FRONTEND_URL, 'http://localhost:3001', 'http://localhost:3000']
-    : ['http://localhost:3001', 'http://localhost:3000', 'https://your-app.vercel.app', 'https://your-app.railway.app', 'https://your-app.fly.dev'];
-
   app.enableCors({
-    origin: allowedOrigins,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+    origin: [
+      'http://localhost:3000',
+      'http://localhost:3001',
+      'http://127.0.0.1:3000',
+      ...(process.env.FRONTEND_URL ? [process.env.FRONTEND_URL] : []),
+    ],
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true,
   });
 
-  // Security headers
-  app.use(helmet({
-    contentSecurityPolicy: process.env.NODE_ENV === 'production' ? undefined : false,
-  }));
-
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
 
-  const port = parseInt(process.env.PORT, 10) || 3000;
-  await app.listen(port);
-  console.log(`Backend running on http://localhost:${port}`);
+  const port = process.env.PORT || 3000;
+  await app.listen(port, '0.0.0.0');
 }
 bootstrap();

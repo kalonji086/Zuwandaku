@@ -7,7 +7,7 @@ export class AppController {
     return 'ZUWAndaku Backend API is running!';
   }
 
-  @Get('api/health')
+  @Get('health')
   getHealth(): { status: string; timestamp: string } {
     return {
       status: 'ok',

@@ -7,8 +7,8 @@ Plateforme de location/vente maisons, parcelles et véhicules à Kinshasa (RDC).
 - Frontend: Next.js (TS) + Tailwind
 
 ## Déploiement
-- Backend: Déployé sur Fly.io (https://zuwandaku-backend-holy-glitter-298.fly.dev)
-- Frontend: Déployé sur Netlify
+- Backend: Render (`backend/RENDER_DEPLOY.md`)
+- Frontend: Netlify (`frontend/NETLIFY_DEPLOY.md`)
 
 ## Quick Start
 1. `npm install`
@@ -16,8 +16,4 @@ Plateforme de location/vente maisons, parcelles et véhicules à Kinshasa (RDC).
 3. Backend: `npm run dev:backend` (port 3000)
 4. Frontend: `npm run dev:frontend` (port 3001)
 
-## Documentation
-- Voir `backend/FLY_DEPLOY.md` pour le déploiement du backend sur Fly.io
-- Voir `frontend/NETLIFY_DEPLOY.md` pour le déploiement du frontend sur Netlify
-
-See TODO.md for progress.&#10;
+See TODO.md for progress.
